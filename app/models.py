@@ -26,9 +26,11 @@ class Automovel(BaseModel):
     __abstract__ = True
 
 
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     marca = db.Column(db.String(70))
     modelo = db.Column(db.String(100))
     ano = db.Column(db.String(10))
+    cor = db.Column(db.String(20))
     preco = db.Column(db.Float)
     motor = db.Column(db.String(50))
     

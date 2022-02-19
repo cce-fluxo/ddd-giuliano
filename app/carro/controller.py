@@ -1,8 +1,6 @@
 from app.carro.models import Carro
 from flask import request
 from flask.views import MethodView
-import bcrypt
-from flask_jwt_extended import jwt_required, create_access_token
 
 
 class CarroG(MethodView):
@@ -12,15 +10,16 @@ class CarroG(MethodView):
         marca = body.get('marca')
         modelo = body.get('modelo')
         ano = body.get('ano')
+        cor = body. get('cor')
         preco = body.get('preco')
         motor = body.get('motor')
         bancos = body.get('bancos')
 
-        if isinstance(marca, str) and isinstance(modelo, str) and isinstance(ano, str) and isinstance(preco,float) and isinstance(motor, str) and isinstance(bancos, int):
-            carro = Carro(marca=marca, modelo=modelo, ano=ano, preco=preco, motor=motor, bancos=bancos)
+        if isinstance(marca, str) and isinstance(modelo, str) and isinstance(ano, str) and isinstance(cor, str) and isinstance(preco,float) and isinstance(motor, str) and isinstance(bancos, int):
+            carro = Carro(marca=marca, modelo=modelo, ano=ano, cor=cor, preco=preco, motor=motor, bancos=bancos)
             carro.save()
 
-            return carro.json()
+            return carro.json(),200
 
         return {"code_status":"dados inválidos"},400
 
@@ -42,19 +41,21 @@ class CarroID:
 
     def patch(self, id):
         body = request.json()
-        carro = Carro.get_or_404(id)
+        carro = Carro.query.get_or_404(id)
 
         marca = body.get("marca", carro.marca)
         modelo = body.get("modelo", carro.modelo)
         ano = body.get("ano", carro.ano)
+        cor = body.get("cor", carro.cor)
         preco = body.get("preco", carro.preco)
         motor = body.get("motor", carro.motor)
         bancos = body.get("bancos", carro.bancos)
 
-        if isinstance(marca, str) and isinstance(modelo, str) and isinstance(ano,str) and isinstance(preco, float) and isinstance(motor, str) and isinstance(bancos, int):
+        if isinstance(marca, str) and isinstance(modelo, str) and isinstance(ano,str) and isinstance(cor,str) and isinstance(preco, float) and isinstance(motor, str) and isinstance(bancos, int):
             carro.marca = marca
             carro.modelo = modelo
             carro.ano = ano
+            carro.cor = cor
             carro.preco = preco
             carro.motor = motor
             carro.bancos = bancos
@@ -67,4 +68,4 @@ class CarroID:
     def delete(self, id):
         carro = Carro.query.get_or_404(id)
         carro.delete()
-        return {"carro deletado"}, 200
+        return {"code_status":"carro deletado"},200

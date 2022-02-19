@@ -1,12 +1,10 @@
 from markupsafe import _MarkupEscapeHelper
-from app.models import Automovel, db
+from app.models import Automovel
 
 
-class Carro(Automovel):
+class Moto(Automovel):
 
-    __tablename__ = "carro"
-
-    bancos = db.Column(db.SmallInteger)
+    __tablename__ = 'moto'
 
     def json(self):
         return {
@@ -15,6 +13,5 @@ class Carro(Automovel):
             "ano" : self.ano,
             "cor" : self.cor,
             "preco" : self.preco,
-            "motor" : self.motor,
-            "bancos" : self.bancos
+            "motor" : self.motor
         }
