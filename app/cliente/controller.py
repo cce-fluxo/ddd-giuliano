@@ -62,7 +62,7 @@ class ClienteID(MethodView):
         idade = body.get("idade", cliente.idade)
 
         if isinstance(email, str) and isinstance(senha, str) and isinstance(nome, str) and isinstance(cpf, str) and isinstance(celular, str) and isinstance(cep, str) and isinstance(endereco, str) and isinstance(complemento, str) and isinstance(idade, int):
-            senha_hash = bcrypt.hashpw(senha.enconde(), bcrypt.gensalt())
+            senha_hash = bcrypt.hashpw(senha.encode(), bcrypt.gensalt())
             cliente.email = email
             cliente.senha_hash = senha_hash
             cliente.nome = nome
@@ -79,7 +79,7 @@ class ClienteID(MethodView):
 
 
     def delete(self, id):
-        cliente = Cliente.query.get_or_404
+        cliente = Cliente.query.get_or_404(id)
         cliente.delete(cliente)
         return {"code_status":"deletado"},200
 
@@ -96,6 +96,6 @@ class ClienteLogin(MethodView):
         if not cliente or not bcrypt.hashpw(senha.encode(), bcrypt.gensalt()):
             return {'code_status':'usuário ou senha inválidos'},400
 
-        token = create_acces_token(identity=cliente.id)
+        token = create_access_token(identity=cliente.id)
 
         return {'token':token},200
