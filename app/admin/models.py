@@ -9,3 +9,8 @@ class Admin(BaseModel):
 
     email = db.Column(db.String(70), nullable=False, unique=True)
     senha_hash = db.Column(db.String(70), nullable=False)
+
+    def json(self):
+        return {
+            "email": self.email
+        }
