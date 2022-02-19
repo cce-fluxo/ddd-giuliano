@@ -2,6 +2,7 @@ from app.cliente.models import Cliente
 from flask import request
 from flask.views import MethodView
 import bcrypt
+from flask_jwt_extended import create_access_token, jwt_required
 
 
 class ClienteG(MethodView):
@@ -24,7 +25,7 @@ class ClienteG(MethodView):
                 return{"code_status": "esse cliente já existe"},400
 
             senha_hash = bcrypt.hashpw(senha.encode(), bcrypt.gensalt())
-            cliente = Cliente(email=email, senha=senha, nome=nome, cpf=cpf, celular=celular, cep=cep, endereco=endereco, complemento=complemento, idade=idade)
+            cliente = Cliente(email=email, senha_hash=senha_hash, nome=nome, cpf=cpf, celular=celular, cep=cep, endereco=endereco, complemento=complemento, idade=idade)
             cliente.save()
 
             return cliente.json()
@@ -63,7 +64,7 @@ class ClienteID(MethodView):
         if isinstance(email, str) and isinstance(senha, str) and isinstance(nome, str) and isinstance(cpf, str) and isinstance(celular, str) and isinstance(cep, str) and isinstance(endereco, str) and isinstance(complemento, str) and isinstance(idade, int):
             senha_hash = bcrypt.hashpw(senha.enconde(), bcrypt.gensalt())
             cliente.email = email
-            cliente.senha = senha
+            cliente.senha_hash = senha_hash
             cliente.nome = nome
             cliente.cpf = cpf
             cliente.celular = celular
@@ -77,8 +78,24 @@ class ClienteID(MethodView):
         return {"code_status":"dados inválidos"},400
 
 
-def delete(self, id):
-    cliente = Cliente.query.get_or_404
-    cliente.delete(cliente)
-    return {"code_status":"deletado"},200
+    def delete(self, id):
+        cliente = Cliente.query.get_or_404
+        cliente.delete(cliente)
+        return {"code_status":"deletado"},200
 
+
+class ClienteLogin(MethodView):
+    def post(self):
+        body = request.json()
+
+        email = body.get('email')
+        senha = email.get('senha')
+
+        cliente = Cliente.query.filter_by(email=email).first()
+
+        if not cliente or not bcrypt.hashpw(senha.encode(), bcrypt.gensalt()):
+            return {'code_status':'usuário ou senha inválidos'},400
+
+        token = create_acces_token(identity=cliente.id)
+
+        return {'token':token},200
