@@ -6,7 +6,7 @@ from flask_jwt_extended import jwt_required, create_access_token
 
 
 class AdminG(MethodView):
-    def post():
+    def post(self):
         body = request.json()
 
         email = body.get("email")
@@ -64,7 +64,7 @@ class AdminID(MethodView):
     def delete(self, id):
         admin = Admin.query.get_or_404(id)
         admin.delete()
-        return {"code_status" : "admin deletado"}
+        return {"code_status" : "admin deletado"},200
 
     
 class AdminLogin(MethodView):

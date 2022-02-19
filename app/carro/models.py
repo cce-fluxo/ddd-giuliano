@@ -8,7 +8,7 @@ class Carro(Automovel):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
-    bancos = db.Column(db.String(10))
+    bancos = db.Column(db.SmallInteger)
 
     def json(self):
         return {
