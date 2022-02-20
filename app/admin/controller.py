@@ -46,11 +46,14 @@ class AdminID(MethodView):
         admin = Admin.query.get_or_404(id)
 
         email = body.get("email", admin.email)
-        senha = body.get("senha", admin.senha)
+        senha_hash = admin.senha_hash
 
-        if isinstance(email, str) and isinstance(senha, str):
+        if "senha" in body:
+            if isinstance(body.get("senha"),str):
+                senha = body.get("senha", admin.senha)
+                senha_hash = bcrypt.hashpw(senha.encode, bcrypt.gensalt())
 
-            senha_hash = bcrypt.hashpw(senha.encode, bcrypt.gensalt())
+        if isinstance(email, str):
 
             admin.email = email
             admin.senha_hash = senha_hash

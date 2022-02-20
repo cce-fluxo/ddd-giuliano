@@ -53,7 +53,13 @@ class ClienteID(MethodView):
 
         
         email = body.get("email", cliente.email)
-        senha = body.get("senha", cliente.senha)
+
+        senha_hash = cliente.senha_hash
+        if "senha" in body:
+            if isinstance(body.get("senha"), str):
+                senha = body.get("senha")
+                senha_hash = bcrypt.hashpw(senha.encode(), bcrypt.gensalt())
+
         nome = body.get("nome", cliente.nome)
         cpf = body.get("cpf", cliente.cpf)
         celular = body.get("celular", cliente.celular)
@@ -62,8 +68,7 @@ class ClienteID(MethodView):
         complemento = body.get("complemento", cliente.complemento)
         idade = body.get("idade", cliente.idade)
 
-        if isinstance(email, str) and isinstance(senha, str) and isinstance(nome, str) and isinstance(cpf, str) and isinstance(celular, str) and isinstance(cep, str) and isinstance(endereco, str) and isinstance(complemento, str) and isinstance(idade, int):
-            senha_hash = bcrypt.hashpw(senha.encode(), bcrypt.gensalt())
+        if isinstance(email, str) and isinstance(nome, str) and isinstance(cpf, str) and isinstance(celular, str) and isinstance(cep, str) and isinstance(endereco, str) and isinstance(complemento, str) and isinstance(idade, int):
             cliente.email = email
             cliente.senha_hash = senha_hash
             cliente.nome = nome
