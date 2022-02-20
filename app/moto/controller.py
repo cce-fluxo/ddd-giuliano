@@ -4,7 +4,7 @@ from flask.views import MethodView
 
 class MotoG(MethodView):
     def post(self):
-        body = request.json()
+        body = request.json
 
         marca = body.get('marca')
         modelo = body.get('modelo')
@@ -38,7 +38,7 @@ class MotoID(MethodView):
 
 
     def patch(self,id):
-        body = request.json()
+        body = request.json
         moto = Moto.query.get_or_404(id)
 
         marca = body.get("marca", moto.marca)

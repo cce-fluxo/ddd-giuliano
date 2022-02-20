@@ -5,7 +5,7 @@ from flask.views import MethodView
 
 class CarroG(MethodView):
     def post(self):
-        body = request.json()
+        body = request.json
 
         marca = body.get('marca')
         modelo = body.get('modelo')
@@ -34,13 +34,13 @@ class CarroG(MethodView):
         return body
 
 
-class CarroID:
+class CarroID(MethodView):
     def get(self, id):
         carro = Carro.query.get_or_404(id)
         return carro.json()
 
     def patch(self, id):
-        body = request.json()
+        body = request.json
         carro = Carro.query.get_or_404(id)
 
         marca = body.get("marca", carro.marca)

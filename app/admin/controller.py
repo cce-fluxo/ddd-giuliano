@@ -7,7 +7,7 @@ from flask_jwt_extended import jwt_required, create_access_token
 
 class AdminG(MethodView):
     def post(self):
-        body = request.json()
+        body = request.json
 
         email = body.get("email")
         senha = body.get("senha")
@@ -42,7 +42,7 @@ class AdminID(MethodView):
 
 
     def patch(self, id):
-        body = request.json()
+        body = request.json
         admin = Admin.query.get_or_404(id)
 
         email = body.get("email", admin.email)
@@ -69,7 +69,7 @@ class AdminID(MethodView):
     
 class AdminLogin(MethodView):
     def post(self):
-        body = request.json()
+        body = request.json
         email = body.get("email")
         senha = body.get("senha")
 

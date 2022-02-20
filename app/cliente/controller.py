@@ -8,7 +8,7 @@ from app.cliente.schemas import ClienteSchema
 
 class ClienteG(MethodView):
     def post(self):
-        body = request.json()
+        body = request.json
 
         email = body.get("email")
         senha = body.get("senha")
@@ -48,7 +48,7 @@ class ClienteID(MethodView):
 
 
     def patch(self,id):
-        body = request.json()
+        body = request.json
         cliente = Cliente.query.get_or_404(id)
 
         
@@ -87,7 +87,7 @@ class ClienteID(MethodView):
 
 class ClienteLogin(MethodView):
     def post(self):
-        body = request.json()
+        body = request.json
 
         email = body.get('email')
         senha = email.get('senha')
