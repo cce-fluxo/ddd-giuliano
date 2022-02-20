@@ -19,3 +19,13 @@ class ClienteSchema(ma.SQLAlchemySchema):
     endereco = ma.String()
     complemento = ma.String()
     idade = ma.Integer()
+
+class LoginSchema(ma.SQLAlchemySchema):
+
+    class Meta:
+        model = Cliente
+        load_instance = True
+        ordered = True
+
+    email = ma.Email(required=True)
+    senha = ma.String(required=True, load_only=True)

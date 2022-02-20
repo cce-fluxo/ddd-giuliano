@@ -4,7 +4,7 @@ from flask import request, jsonify
 from flask.views import MethodView
 import bcrypt
 from flask_jwt_extended import create_access_token, jwt_required
-from app.cliente.schemas import ClienteSchema
+from app.cliente.schemas import ClienteSchema, LoginSchema
 
 
 class ClienteG(MethodView):
@@ -36,9 +36,13 @@ class ClienteID(MethodView):
     def patch(self,id):
         body = request.json
         cliente = Cliente.query.get_or_404(id)
+        schema = ClienteSchema()
 
+        cliente = schema.load(body, instance=cliente, partial=True)
+        cliente.save()
+        return schema.dump(cliente)
         
-        email = body.get("email", cliente.email)
+        '''email = body.get("email", cliente.email)
 
         senha_hash = cliente.senha_hash
         if "senha" in body:
@@ -67,7 +71,7 @@ class ClienteID(MethodView):
 
             cliente.update()
             return cliente.json(),200
-        return {"code_status":"dados inválidos"},400
+        return {"code_status":"dados inválidos"},400'''
 
 
     def delete(self, id):
@@ -76,7 +80,7 @@ class ClienteID(MethodView):
         return {"code_status":"deletado"},200
 
 
-class ClienteLogin(MethodView):
+'''class ClienteLogin(MethodView):
     def post(self):
         body = request.json
 
@@ -85,9 +89,30 @@ class ClienteLogin(MethodView):
 
         cliente = Cliente.query.filter_by(email=email).first()
 
-        if not cliente or not bcrypt.hashpw(senha.encode(), bcrypt.gensalt()):
+        if not cliente or not bcrypt.hashpw(senha.encode(), bcrypt.gensalt()) == cliente.senha_hash:
             return {'code_status':'usuário ou senha inválidos'},400
 
         token = create_access_token(identity=cliente.id)
 
-        return {'token':token},200
+        return {'token':token},200'''
+
+class ClienteLogin(MethodView):
+    def post(self):
+        schema = LoginSchema()
+        data = request.json
+
+        email = data["email"]
+        senha = data["senha"]
+
+        cliente = Cliente.query.filter_by(email=email).first()
+
+        if not cliente or not bcrypt.checkpw(senha.encode(), cliente.senha_hash):
+            return {"error":"usuário ou senha inválidos"},400
+
+        token = create_access_token(identity=cliente.id)
+
+        return {
+            "cliente" : schema.dump(cliente),
+            "token" : token
+        }, 200
+            
