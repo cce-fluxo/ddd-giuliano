@@ -1,9 +1,10 @@
 from app.cliente.models import Cliente
-from flask import request
+from flask import request, jsonify
 from flask.views import MethodView
 import bcrypt
 from flask_jwt_extended import create_access_token, jwt_required
 from app.cliente.schemas import ClienteSchema
+from app.utils.filters import Filter
 
 
 class ClienteG(MethodView):
@@ -33,12 +34,17 @@ class ClienteG(MethodView):
         return {"code_status": "dados inválidos"},400
 
 
-    def get(self):
+    '''def get(self):
         clientes = Cliente.query.all()
         body = {}
         for cliente in clientes:
             body[f"{cliente.id}"] = cliente.json()
-        return body
+        return body'''
+
+    def get(self):
+        schema = Filter.getSchema(qs=request.args, schema_cls=ClienteSchema, many=True)
+        clientes = Cliente.query.all()
+        return jsonify(schema.dump(clientes)), 200
 
 
 class ClienteID(MethodView):
