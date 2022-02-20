@@ -14,7 +14,7 @@ class ClienteSchema(ma.SQLAlchemySchema):
     senha = ma.String(load_only=True)
     nome = ma.String()
     cpf = ma.String()
-    culular = ma.String()
+    celular = ma.String()
     cep = ma.String()
     endereco = ma.String()
     complemento = ma.String()

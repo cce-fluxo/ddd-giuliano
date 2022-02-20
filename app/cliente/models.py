@@ -1,4 +1,5 @@
 from app.models import BaseModel, db
+import bcrypt
 
 
 class Cliente(BaseModel):
@@ -28,3 +29,12 @@ class Cliente(BaseModel):
             "complemento":self.complemento,
             "idade":self.idade
         }
+
+    @property
+    def senha(self):
+        raise AttributeError('senha is not a readable attribute')
+    
+    @senha.setter
+    def senha(self, senha):
+        self.senha_hash = bcrypt.hashpw(
+            senha.encode(), bcrypt.gensalt())
