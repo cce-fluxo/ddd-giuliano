@@ -28,8 +28,9 @@ class ClienteG(MethodView):
 
 class ClienteID(MethodView):
     def get(self, id):
+        schema = ClienteSchema()
         cliente = Cliente.query.get_or_404(id)
-        return cliente.json()
+        return jsonify(schema.dump(cliente))
 
 
     def patch(self,id):
