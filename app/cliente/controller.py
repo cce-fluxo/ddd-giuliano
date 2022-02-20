@@ -42,59 +42,12 @@ class ClienteID(MethodView):
         cliente.save()
         return schema.dump(cliente)
         
-        '''email = body.get("email", cliente.email)
-
-        senha_hash = cliente.senha_hash
-        if "senha" in body:
-            if isinstance(body.get("senha"), str):
-                senha = body.get("senha")
-                senha_hash = bcrypt.hashpw(senha.encode(), bcrypt.gensalt())
-
-        nome = body.get("nome", cliente.nome)
-        cpf = body.get("cpf", cliente.cpf)
-        celular = body.get("celular", cliente.celular)
-        cep = body.get("cep", cliente.cep)
-        endereco = body.get("endereco", cliente.endereco)
-        complemento = body.get("complemento", cliente.complemento)
-        idade = body.get("idade", cliente.idade)
-
-        if isinstance(email, str) and isinstance(nome, str) and isinstance(cpf, str) and isinstance(celular, str) and isinstance(cep, str) and isinstance(endereco, str) and isinstance(complemento, str) and isinstance(idade, int):
-            cliente.email = email
-            cliente.senha_hash = senha_hash
-            cliente.nome = nome
-            cliente.cpf = cpf
-            cliente.celular = celular
-            cliente.cep = cep
-            cliente.endereco = endereco
-            cliente.complemento = complemento
-            cliente.idade = idade
-
-            cliente.update()
-            return cliente.json(),200
-        return {"code_status":"dados inválidos"},400'''
-
 
     def delete(self, id):
         cliente = Cliente.query.get_or_404(id)
         cliente.delete(cliente)
         return {"code_status":"deletado"},200
 
-
-'''class ClienteLogin(MethodView):
-    def post(self):
-        body = request.json
-
-        email = body.get('email')
-        senha = body.get('senha')
-
-        cliente = Cliente.query.filter_by(email=email).first()
-
-        if not cliente or not bcrypt.hashpw(senha.encode(), bcrypt.gensalt()) == cliente.senha_hash:
-            return {'code_status':'usuário ou senha inválidos'},400
-
-        token = create_access_token(identity=cliente.id)
-
-        return {'token':token},200'''
 
 class ClienteLogin(MethodView):
     def post(self):
