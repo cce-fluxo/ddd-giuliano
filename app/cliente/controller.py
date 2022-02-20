@@ -95,7 +95,7 @@ class ClienteLogin(MethodView):
         body = request.json
 
         email = body.get('email')
-        senha = email.get('senha')
+        senha = body.get('senha')
 
         cliente = Cliente.query.filter_by(email=email).first()
 
