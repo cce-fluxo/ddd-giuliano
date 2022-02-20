@@ -3,6 +3,7 @@ from flask import request
 from flask.views import MethodView
 import bcrypt
 from flask_jwt_extended import create_access_token, jwt_required
+from app.cliente.schemas import ClienteSchema
 
 
 class ClienteG(MethodView):
