@@ -41,10 +41,18 @@ class ClienteG(MethodView):
             body[f"{cliente.id}"] = cliente.json()
         return body'''
 
-    def get(self):
+    '''def get(self):
         schema = Filter.getSchema(qs=request.args, schema_cls=ClienteSchema, many=True)
         clientes = Cliente.query.all()
-        return jsonify(schema.dump(clientes)), 200
+        return jsonify(schema.dump(clientes)), 200'''
+        
+    def get(self):
+        schema = ClienteSchema()
+        clientes = Cliente.query.all()
+        body = {}
+        for cliente in clientes:
+            body[f"{cliente.id}"] = schema.dump(cliente)
+        return body
 
 
 class ClienteID(MethodView):
