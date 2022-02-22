@@ -31,7 +31,7 @@ class ClienteGet(MethodView):
     def get(self):
         schema = ClienteSchema()
         clientes = Cliente.query.all()
-        return jsonify(schema.dump(clientes, many=True),200
+        return jsonify(schema.dump(clientes, many=True)),200
 
 
 class ClienteID(MethodView):
