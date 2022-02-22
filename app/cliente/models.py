@@ -17,6 +17,7 @@ class Cliente(BaseModel):
     endereco = db.Column(db.String(150))
     complemento = db.Column(db.String(30))
     idade = db.Column(db.SmallInteger)
+    role = 'cliente'
 
     def json(self):
         return{

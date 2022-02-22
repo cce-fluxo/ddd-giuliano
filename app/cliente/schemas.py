@@ -20,6 +20,7 @@ class ClienteSchema(ma.SQLAlchemySchema):
     complemento = ma.String()
     idade = ma.Integer()
 
+
 class LoginSchema(ma.SQLAlchemySchema):
 
     class Meta:

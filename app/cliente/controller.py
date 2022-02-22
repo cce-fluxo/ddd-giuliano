@@ -3,8 +3,10 @@ from app.cliente.models import Cliente
 from flask import request, jsonify
 from flask.views import MethodView
 import bcrypt
-from flask_jwt_extended import create_access_token, jwt_required
+from flask_jwt_extended import create_access_token
 from app.cliente.schemas import ClienteSchema, LoginSchema
+from app.permissions import cliente_jwt_required
+from flask_jwt_extended import jwt_required
 
 
 class ClienteG(MethodView):
@@ -12,12 +14,12 @@ class ClienteG(MethodView):
         schema = ClienteSchema()
         body = request.json
 
-        try:
-            cliente = schema.load(body)
-            cliente.save()
-            return schema.dump(cliente)
-        except sqlalchemy.exc.IntegrityError:
-            return {"code_status": "esse cliente já existe"},400
+        #try:
+        cliente = schema.load(body)
+        cliente.save()
+        return schema.dump(cliente)
+        '''except sqlalchemy.exc.IntegrityError:
+            return {"code_status": "esse cliente já existe"},400'''
 
 
     def get(self):
@@ -27,6 +29,7 @@ class ClienteG(MethodView):
 
 
 class ClienteID(MethodView):
+    decorators = [cliente_jwt_required]
     def get(self, id):
         schema = ClienteSchema()
         cliente = Cliente.query.get_or_404(id)
