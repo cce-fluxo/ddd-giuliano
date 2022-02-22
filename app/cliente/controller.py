@@ -1,18 +1,23 @@
 import sqlalchemy
 from app.cliente.models import Cliente
+from app.admin.models import Admin
 from flask import request, jsonify
 from flask.views import MethodView
 import bcrypt
 from flask_jwt_extended import create_access_token
 from app.cliente.schemas import ClienteSchema, LoginSchema
-from app.permissions import cliente_jwt_required
-from flask_jwt_extended import jwt_required
+from app.permissions import cliente_jwt_required, admin_jwt_required
 
 
-class ClienteG(MethodView):
+class ClientePost(MethodView):
     def post(self):
         schema = ClienteSchema()
         body = request.json
+
+        email = body.get("email")
+        admin = Admin.query.filter_by(email=email).first()
+        if admin:
+            return {"code_status":"email já em uso"}, 401
 
         try:
             cliente = schema.load(body)
@@ -22,7 +27,9 @@ class ClienteG(MethodView):
             return {"code_status": "esse cliente já existe"},400
 
 
-    def get(self):
+class ClienteGet(MethodView):
+    decorators = [admin_jwt_required]
+    def get(self, email):
         schema = ClienteSchema()
         clientes = Cliente.query.all()
         return jsonify(schema.dump(clientes, many=True))

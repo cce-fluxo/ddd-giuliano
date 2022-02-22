@@ -14,7 +14,7 @@ class AdminSchema(ma.SQLAlchemySchema):
     senha = ma.String(load_only=True)
 
 
-class AdminLoginSchema(ma.SQLAlchemySchema):
+class LoginSchema(ma.SQLAlchemySchema):
 
     class Meta:
         model = Admin

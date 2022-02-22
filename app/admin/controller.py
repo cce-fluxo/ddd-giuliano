@@ -1,16 +1,22 @@
 import sqlalchemy
 from app.admin.models import Admin
+from app.cliente.models import Cliente
 from flask import request, jsonify
 from flask.views import MethodView
 import bcrypt
 from flask_jwt_extended import jwt_required, create_access_token
-from app.admin.schemas import AdminSchema, AdminLoginSchema
+from app.admin.schemas import AdminSchema, LoginSchema
 
 
 class AdminG(MethodView):
     def post(self):
         schema = AdminSchema()
         body = request.json
+
+        email = body.get("email")
+        cliente = Cliente.query.filter_by(email=email).first()
+        if cliente:
+            return {"code_status":"email já em uso por um cliente"}, 401
 
         try:
             admin = schema.load(body)
@@ -50,7 +56,7 @@ class AdminID(MethodView):
     
 class AdminLogin(MethodView):
     def post(self):
-        schema = AdminLoginSchema()
+        schema = LoginSchema()
         data = request.json
 
         email = data["email"]
@@ -61,7 +67,7 @@ class AdminLogin(MethodView):
         if not admin or not bcrypt.checkpw(senha.encode(), admin.senha_hash):
             return {"error":"usuário ou senha inválidos"},400
 
-        token = create_access_token(identity=admin.id)
+        token = create_access_token(identity=admin.email)
 
         return {
             "admin" : schema.dump(admin),
