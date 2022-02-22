@@ -7,6 +7,7 @@ import bcrypt
 from flask_jwt_extended import create_access_token
 from app.cliente.schemas import ClienteSchema, LoginSchema
 from app.permissions import cliente_jwt_required, admin_jwt_required
+from app.functions import modified_binary_to_string
 
 
 class ClientePost(MethodView):
@@ -29,10 +30,12 @@ class ClientePost(MethodView):
 
 class ClienteGet(MethodView):
     decorators = [admin_jwt_required]
-    def get(self, email):
+    def get(self, modified_binary):
+        email = modified_binary_to_string(modified_binary)
+        admin = Admin.get_or_404(email)
         schema = ClienteSchema()
         clientes = Cliente.query.all()
-        return jsonify(schema.dump(clientes, many=True))
+        return {"admin" : admin.email,}
 
 
 class ClienteID(MethodView):

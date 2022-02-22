@@ -2,7 +2,7 @@ from functools import wraps
 from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
 from app.cliente.models import Cliente
 from app.admin.models import Admin
-#from app.functions import binary_to_string, string_to_binary
+from app.functions import modified_binary_to_string
 
 
 def cliente_jwt_required(func):
@@ -33,9 +33,9 @@ def admin_jwt_required(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         verify_jwt_in_request()
-        if kwargs.get('email'):
+        if kwargs.get('modified_binary'):
             check = Admin.query.get_or_404(get_jwt_identity())
-            if check.email == (kwargs.get('email')):
+            if check.email == modified_binary_to_string(kwargs.get('modified_binary')):
                 return func(*args, **kwargs)
             else:
                 return {'msg': 'Somente admins'}, 401
