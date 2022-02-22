@@ -11,19 +11,19 @@ class MotoG(MethodView):
 
         moto = schema.load(body)
         moto.save()
-        return schema.dump(moto)
+        return schema.dump(moto),200
 
     def get(self):
         schema = MotoSchema()
         motos = Moto.query.all()
-        return jsonify(schema.dump(motos, many=True))
+        return jsonify(schema.dump(motos, many=True)),200
 
 
 class MotoID(MethodView):
     def get(self, id):
         schema = MotoSchema()
         moto = Moto.query.get_or_404(id)
-        return jsonify(schema.dump(moto))
+        return jsonify(schema.dump(moto)),200
 
 
     def patch(self,id):
@@ -31,9 +31,9 @@ class MotoID(MethodView):
         moto = Moto.query.get_or_404(id)
         schema = MotoSchema()
 
-        moot = schema.load(body, instance=moto, partial=True)
+        moto = schema.load(body, instance=moto, partial=True)
         moto.save()
-        return schema.dump(moto)
+        return schema.dump(moto),200
         
 
     def delete(self, id):

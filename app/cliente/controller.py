@@ -14,15 +14,15 @@ class ClientePost(MethodView):
         schema = ClienteSchema()
         body = request.json
 
-        email = body.get("email")
+        '''email = body.get("email")
         admin = Admin.query.filter_by(email=email).first()
         if admin:
-            return {"code_status":"email já em uso"}, 401
+            return {"code_status":"email já em uso"}, 401'''
 
         try:
             cliente = schema.load(body)
             cliente.save()
-            return schema.dump(cliente)
+            return schema.dump(cliente),200
         except sqlalchemy.exc.IntegrityError:
             return {"code_status": "esse cliente já existe"},400
 
@@ -31,7 +31,7 @@ class ClienteGet(MethodView):
     def get(self):
         schema = ClienteSchema()
         clientes = Cliente.query.all()
-        return jsonify(schema.dump(clientes, many=True),)
+        return jsonify(schema.dump(clientes, many=True),200
 
 
 class ClienteID(MethodView):
@@ -39,7 +39,7 @@ class ClienteID(MethodView):
     def get(self, id):
         schema = ClienteSchema()
         cliente = Cliente.query.get_or_404(id)
-        return jsonify(schema.dump(cliente))
+        return jsonify(schema.dump(cliente)),200
 
 
     def patch(self,id):
@@ -49,7 +49,7 @@ class ClienteID(MethodView):
 
         cliente = schema.load(body, instance=cliente, partial=True)
         cliente.save()
-        return schema.dump(cliente)
+        return schema.dump(cliente),200
         
 
     def delete(self, id):

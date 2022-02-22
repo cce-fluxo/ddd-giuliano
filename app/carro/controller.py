@@ -11,19 +11,19 @@ class CarroG(MethodView):
 
         carro = schema.load(body)
         carro.save()
-        return schema.dump(carro)
+        return schema.dump(carro),200
 
     def get(self):
         schema = CarroSchema()
         carros = Carro.query.all()
-        return jsonify(schema.dump(carros, many=True))
+        return jsonify(schema.dump(carros, many=True)),200
 
 
 class CarroID(MethodView):
     def get(self, id):
         schema = CarroSchema()
         carro = Carro.query.get_or_404(id)
-        return jsonify(schema.dump(carro))
+        return jsonify(schema.dump(carro)),200
 
 
     def patch(self,id):
@@ -33,7 +33,7 @@ class CarroID(MethodView):
 
         carro = schema.load(body, instance=carro, partial=True)
         carro.save()
-        return schema.dump(carro)
+        return schema.dump(carro),200
         
 
     def delete(self, id):

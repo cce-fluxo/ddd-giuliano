@@ -21,21 +21,21 @@ class AdminG(MethodView):
         try:
             admin = schema.load(body)
             admin.save()
-            return schema.dump(admin)
+            return schema.dump(admin),200
         except sqlalchemy.exc.IntegrityError:
             return {"code_status": "esse admin já existe"},400
 
     def get(self):
         schema = AdminSchema()
         admins = Admin.query.all()
-        return jsonify(schema.dump(admins, many=True))
+        return jsonify(schema.dump(admins, many=True)),200
 
 
 class AdminID(MethodView):
     def get(self, id):
         schema = AdminSchema()
         admin = Admin.query.get_or_404(id)
-        return jsonify(schema.dump(admin))
+        return jsonify(schema.dump(admin)),200
 
 
     def patch(self,id):
@@ -45,7 +45,7 @@ class AdminID(MethodView):
 
         admin = schema.load(body, instance=admin, partial=True)
         admin.save()
-        return schema.dump(admin)
+        return schema.dump(admin),200
         
 
     def delete(self, id):
