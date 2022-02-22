@@ -1,90 +1,72 @@
+import sqlalchemy
 from app.admin.models import Admin
-from flask import request
+from flask import request, jsonify
 from flask.views import MethodView
 import bcrypt
 from flask_jwt_extended import jwt_required, create_access_token
+from app.admin.schemas import AdminSchema, AdminLoginSchema
 
 
 class AdminG(MethodView):
     def post(self):
+        schema = AdminSchema()
         body = request.json
 
-        email = body.get("email")
-        senha = body.get("senha")
-
-        if isinstance(email,str) and isinstance(senha,str):
-
-            admin = admin.query.filter_by(email=email)
-            if admin:
-                return {"code_status":"esse admin já extiste"},400
-            
-            senha_hash = bcrypt.hashpw(senha.encode, bcrypt.gensalt())
-            admin = Admin(email=email, senha_hash=senha_hash)
+        try:
+            admin = schema.load(body)
             admin.save()
-
-            return admin.json()
-
-        return {"code_status":"dados inválidos"},400
-
+            return schema.dump(admin)
+        except sqlalchemy.exc.IntegrityError:
+            return {"code_status": "esse admin já existe"},400
 
     def get(self):
+        schema = AdminSchema()
         admins = Admin.query.all()
-        body = {}
-        for admin in admins:
-            body[f"{admin.id}"] = admin.json()
-        return body
+        return jsonify(schema.dump(admins, many=True))
 
 
 class AdminID(MethodView):
     def get(self, id):
-        admin = Admin.get_or_404(id)
-        return admin.json()
+        schema = AdminSchema()
+        admin = Admin.query.get_or_404(id)
+        return jsonify(schema.dump(admin))
 
 
-    def patch(self, id):
+    def patch(self,id):
         body = request.json
         admin = Admin.query.get_or_404(id)
+        schema = AdminSchema()
 
-        email = body.get("email", admin.email)
-        senha_hash = admin.senha_hash
+        admin = schema.load(body, instance=admin, partial=True)
+        admin.save()
+        return schema.dump(admin)
+        
 
-        if "senha" in body:
-            if isinstance(body.get("senha"),str):
-                senha = body.get("senha", admin.senha)
-                senha_hash = bcrypt.hashpw(senha.encode, bcrypt.gensalt())
-
-        if isinstance(email, str):
-
-            admin.email = email
-            admin.senha_hash = senha_hash
-
-            admin.update()
-            return admin.json(),200
-
-        return {"code_status" : "dados inválidos"},400
-
-    
     def delete(self, id):
         admin = Admin.query.get_or_404(id)
-        admin.delete()
-        return {"code_status" : "admin deletado"},200
+        admin.delete(admin)
+        return {"code_status":"deletado"},200
 
     
 class AdminLogin(MethodView):
     def post(self):
-        body = request.json
-        email = body.get("email")
-        senha = body.get("senha")
+        schema = AdminLoginSchema()
+        data = request.json
 
-        senha_hash = bcrypt.hashpw(senha.encode, bcrypt.gensalt())
+        email = data["email"]
+        senha = data["senha"]
 
-        admin = Admin.query.filter_by(id=id).first()
+        admin = Admin.query.filter_by(email=email).first()
 
-        if not admin or not senha_hash:
-            return {"code_status" : "usuário ou senha inválidos"}
-        token = create_access_token(identity = admin.id)
+        if not admin or not bcrypt.checkpw(senha.encode(), admin.senha_hash):
+            return {"error":"usuário ou senha inválidos"},400
 
-        return {'token':token},200
+        token = create_access_token(identity=admin.id)
+
+        return {
+            "admin" : schema.dump(admin),
+            "token" : token
+        }, 200
 
 
 

@@ -14,12 +14,12 @@ class ClienteG(MethodView):
         schema = ClienteSchema()
         body = request.json
 
-        #try:
-        cliente = schema.load(body)
-        cliente.save()
-        return schema.dump(cliente)
-        '''except sqlalchemy.exc.IntegrityError:
-            return {"code_status": "esse cliente já existe"},400'''
+        try:
+            cliente = schema.load(body)
+            cliente.save()
+            return schema.dump(cliente)
+        except sqlalchemy.exc.IntegrityError:
+            return {"code_status": "esse cliente já existe"},400
 
 
     def get(self):

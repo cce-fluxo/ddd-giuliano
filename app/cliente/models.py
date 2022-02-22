@@ -19,17 +19,6 @@ class Cliente(BaseModel):
     idade = db.Column(db.SmallInteger)
     role = 'cliente'
 
-    def json(self):
-        return{
-            "email":self.email,
-            "nome":self.nome,
-            "cpf":self.cpf,
-            "celular":self.celular,
-            "cep":self.cep,
-            "endereco":self.endereco,
-            "complemento":self.complemento,
-            "idade":self.idade
-        }
 
     @property
     def senha(self):
