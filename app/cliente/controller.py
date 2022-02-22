@@ -28,11 +28,10 @@ class ClientePost(MethodView):
 
 
 class ClienteGet(MethodView):
-    decorators = [admin_jwt_required]
-    def get(self, modified_binary):
+    def get(self):
         schema = ClienteSchema()
         clientes = Cliente.query.all()
-        return jsonify(schema.dump(clientes, many=True))
+        return jsonify(schema.dump(clientes, many=True),)
 
 
 class ClienteID(MethodView):
