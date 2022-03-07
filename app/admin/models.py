@@ -8,7 +8,7 @@ class Admin(BaseModel):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
-    email = db.Column(db.String(70), nullable=False, unique=True)
+    email = db.Column(db.String(), nullable=False, unique=True)
     senha_hash = db.Column(db.String(), nullable=False)
     role = 'admin'
 
