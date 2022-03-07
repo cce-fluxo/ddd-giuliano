@@ -9,7 +9,7 @@ class Cliente(BaseModel):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
     email = db.Column(db.String(70), nullable=False, unique=True)
-    senha_hash = db.Column(db.String(70), nullable=False)
+    senha_hash = db.Column(db.String(), nullable=False)
     nome = db.Column(db.String(150))
     cpf = db.Column(db.String(15), nullable=False, unique=True)
     celular = db.Column(db.String(20), nullable=False, unique=True)
