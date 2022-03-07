@@ -1,8 +1,8 @@
 from os import environ, path, pardir
 from dotenv import load_dotenv
 
-#env_path = path.abspath(path.join(path.dirname(__file__), pardir))
-#load_dotenv(path.join(env_path, 'env.env'))
+env_path = path.abspath(path.join(path.dirname(__file__), pardir))
+load_dotenv(path.join(env_path, 'env.env'))
 
 
 class Config:
