@@ -4,7 +4,7 @@ from botocore.exceptions import ClientError
 
 
 class Storage:
-    project_name = 'ddd-silver-giuliano'
+    project_name = 'ddd-giuliano'
     session = boto3.session.Session()
     client = session.client('s3',
                             region_name='nyc3',
