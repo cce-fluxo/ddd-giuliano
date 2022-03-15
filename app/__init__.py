@@ -5,6 +5,7 @@ from app.cliente.routes import cliente_api
 from app.admin.routes import admin_api
 from app.carro.routes import carro_api
 from app.moto.routes import moto_api
+from app.storage.routes import storage_api
 
 def create_app():
 
@@ -21,5 +22,6 @@ def create_app():
     app.register_blueprint(admin_api)
     app.register_blueprint(carro_api)
     app.register_blueprint(moto_api)
+    app.register_blueprint(storage_api)
 
     return app

@@ -7,7 +7,7 @@ load_dotenv(path.join(env_path, 'env.env'))
 
 class Config:
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql://nzzyprruvvexht:0d1d2faf66822b24e7f6b4efb4b7db83eafc59275e625ee52d9a5e61ce40a476@ec2-54-158-26-89.compute-1.amazonaws.com:5432/d5qts8p9u1iust'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://mkbhfirwemymvt:3393f2d25b719c8fe78546bd8d0244d0cc614f1d6619b6716d958dc392086697@ec2-3-231-254-204.compute-1.amazonaws.com:5432/d18pgprcvremg6'
     SQLALCHEMY_TRACK_MODIFICATIONS = environ.get('SQLALCHEMY_TRACK_MODIFICATIONS')
     JSON_SORT_KEYS = environ.get('JSON_SORT_KEYS')
 

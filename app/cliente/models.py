@@ -16,7 +16,7 @@ class Cliente(BaseModel):
     cep = db.Column(db.String(15), nullable=False)
     endereco = db.Column(db.String(150))
     complemento = db.Column(db.String(30))
-    idade = db.Column(db.SmallInteger)
+    data_de_nascimento = db.Column(db.String(30))
     role = 'cliente'
 
 

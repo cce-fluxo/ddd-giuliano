@@ -18,7 +18,7 @@ class ClienteSchema(ma.SQLAlchemySchema):
     cep = ma.String()
     endereco = ma.String()
     complemento = ma.String()
-    idade = ma.Integer()
+    data_de_nascimento = ma.String()
 
 
 class LoginSchema(ma.SQLAlchemySchema):
