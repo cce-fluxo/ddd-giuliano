@@ -1,5 +1,6 @@
 from app.models import BaseModel, db
 import bcrypt
+from app.storage.models import storage
 
 
 class Cliente(BaseModel):
@@ -17,6 +18,7 @@ class Cliente(BaseModel):
     endereco = db.Column(db.String(150))
     complemento = db.Column(db.String(30))
     data_de_nascimento = db.Column(db.String(30))
+    avatar = db.Column(db.String(64), unique = True, default = None)
     role = 'cliente'
 
 
@@ -28,3 +30,15 @@ class Cliente(BaseModel):
     def senha(self, senha):
         self.senha_hash = bcrypt.hashpw(
             senha.encode(), bcrypt.gensalt())
+
+    @property
+    def avatar_url(self):
+        if self.avatar:
+            return storage.get_url(self.avatar)
+        return None
+
+    @avatar_url.setter
+    def avatar_url(self,name):
+        if self.avatar:
+            storage.delete_object(self.avatar)
+        self.avatar = name
