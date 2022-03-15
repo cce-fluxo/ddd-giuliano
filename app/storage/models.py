@@ -14,7 +14,7 @@ class Storage:
 
     def upload_file(self, file_key, file) -> tuple:
         try:
-            response = self.client.upload.fileobj(file, 'storage-fluxo', f'{self.project_name}/{file_key}')
+            response = self.client.upload_fileobj(file, 'storage-fluxo', f'{self.project_name}/{file_key}')
         except ClientError as e:
             return False, e
         return True, ''
