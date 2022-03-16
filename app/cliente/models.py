@@ -29,7 +29,7 @@ class Cliente(BaseModel):
     
     @senha.setter
     def senha(self, senha):
-        self.senha_hash = senha.encode
+        self.senha_hash = senha.encode()
 
     '''@property
     def avatar_url(self):
