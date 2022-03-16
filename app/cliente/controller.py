@@ -68,8 +68,10 @@ class ClienteLogin(MethodView):
         senha_inserida_hasheada = bcrypt.hashpw(senha.encode(), bcrypt.gensalt())
 
         cliente = Cliente.query.filter_by(email=email).first()
+        if senha_inserida_hasheada == cliente.senha_hash:
+            check = True
 
-        if not cliente or not bcrypt.checkpw(senha_inserida_hasheada, cliente.senha_hash):
+        if not cliente or not check:
             return {"error":"usuário ou senha inválidos"},400
 
         token = create_access_token(identity=cliente.id)
