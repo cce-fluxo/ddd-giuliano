@@ -29,8 +29,7 @@ class Cliente(BaseModel):
     
     @senha.setter
     def senha(self, senha):
-        self.senha_hash = bcrypt.hashpw(
-            senha.encode(), bcrypt.gensalt())
+        self.senha_hash = senha.encode
 
     '''@property
     def avatar_url(self):
