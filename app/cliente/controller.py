@@ -58,7 +58,7 @@ class ClienteID(MethodView):
         return {"code_status":"deletado"},200
 
 
-'''class ClienteLogin(MethodView):
+class ClienteLogin(MethodView):
     def post(self):
         schema = LoginSchema()
         data = request.json
@@ -68,7 +68,7 @@ class ClienteID(MethodView):
 
         cliente = Cliente.query.filter_by(email=email).first()
 
-        if not cliente or not bcrypt.checkpw(senha.encode(), cliente.senha_hash):
+        if not cliente or not bcrypt.checkpw(senha, cliente.senha_hash.decode()):
             return {"error":"usuário ou senha inválidos"},400
 
         token = create_access_token(identity=cliente.id)
@@ -76,5 +76,5 @@ class ClienteID(MethodView):
         return {
             "cliente" : schema.dump(cliente),
             "token" : token
-        }, 200'''
+        }, 200
             
