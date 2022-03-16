@@ -67,8 +67,8 @@ class ClienteLogin(MethodView):
         senha = data["senha"]
         senha_inserida_hasheada = bcrypt.hashpw(senha.encode(), bcrypt.gensalt())
         check = False
-
         cliente = Cliente.query.filter_by(email=email).first()
+        return [senha, senha_inserida_hasheada, cliente.senha_hash]
         if senha_inserida_hasheada == cliente.senha_hash:
             check = True
 
