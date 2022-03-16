@@ -18,7 +18,7 @@ class Cliente(BaseModel):
     endereco = db.Column(db.String(150))
     complemento = db.Column(db.String(30))
     data_de_nascimento = db.Column(db.String(30))
-    avatar = db.Column(db.String(64), unique = True, default = None)
+    '''avatar = db.Column(db.String(64), unique = True, default = None)'''
     role = 'cliente'
 
 
@@ -31,7 +31,7 @@ class Cliente(BaseModel):
         self.senha_hash = bcrypt.hashpw(
             senha.encode(), bcrypt.gensalt())
 
-    @property
+    '''@property
     def avatar_url(self):
         if self.avatar:
             return storage.get_url(self.avatar)
@@ -41,4 +41,4 @@ class Cliente(BaseModel):
     def avatar_url(self,name):
         if self.avatar:
             storage.delete_object(self.avatar)
-        self.avatar = name
+        self.avatar = name'''
