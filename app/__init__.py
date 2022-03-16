@@ -1,14 +1,25 @@
 from flask import Flask
-from .extensions import db, migrate
+from .extensions import db, migrate, jwt, ma
 from .config import Config
+from app.cliente.routes import cliente_api
+from app.admin.routes import admin_api
+from app.carro.routes import carro_api
+from app.moto.routes import moto_api
 
 def create_app():
 
     app=Flask(__name__)
     app.config.from_object(Config)
-    app.debug = True
+    app.debug=True
 
     db.init_app(app)
-    db.migrate.init_app(app, db)
+    migrate.init_app(app, db)
+    jwt.init_app(app)
+    ma.init_app(app)
+
+    app.register_blueprint(cliente_api)
+    app.register_blueprint(admin_api)
+    app.register_blueprint(carro_api)
+    app.register_blueprint(moto_api)
 
     return app
