@@ -25,19 +25,12 @@ class Cliente(BaseModel):
 
     @property
     def senha(self):
-        raise AttributeError('password is not a readable attribute')
-
+        raise AttributeError('senha is not a readable attribute')
+    
     @senha.setter
-    def senha(self, senha) -> None:
+    def senha(self, senha):
         self.senha_hash = bcrypt.hashpw(
             senha.encode(), bcrypt.gensalt())
-
-    def verify_senha(self, senha) -> bool:
-        return bcrypt.checkpw(senha.encode(), self.senha_hash)
-
-    def token(self) -> str:
-        return create_access_token(
-            identity=self.id)
 
     '''@property
     def avatar_url(self):
