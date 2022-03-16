@@ -1,6 +1,7 @@
 from app.models import BaseModel, db
 import bcrypt
 from app.storage.models import storage
+from flask_jwt_extended import create_access_token
 
 
 class Cliente(BaseModel):
@@ -24,12 +25,19 @@ class Cliente(BaseModel):
 
     @property
     def senha(self):
-        raise AttributeError('senha is not a readable attribute')
-    
+        raise AttributeError('password is not a readable attribute')
+
     @senha.setter
-    def senha(self, senha):
+    def senha(self, senha) -> None:
         self.senha_hash = bcrypt.hashpw(
             senha.encode(), bcrypt.gensalt())
+
+    def verify_senha(self, senha) -> bool:
+        return bcrypt.checkpw(senha.encode(), self.senha_hash)
+
+    def token(self) -> str:
+        return create_access_token(
+            identity=self.id)
 
     '''@property
     def avatar_url(self):

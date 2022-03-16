@@ -61,20 +61,13 @@ class ClienteID(MethodView):
 class ClienteLogin(MethodView):
     def post(self):
         schema = LoginSchema()
-        data = request.json
+        dados = schema.load(request.json)
+        cliente = Cliente.query.filter_by(email=dados['email']).first()
 
-        email = data["email"]
-        senha = data["senha"]
-
-        cliente = Cliente.query.filter_by(email=email).first()
-
-        if not cliente or not bcrypt.checkpw(senha.encode(), cliente.senha_hash):
-            return {"error":"usuário ou senha inválidos"},400
-
+        if (not cliente) or not cliente.verify_senha(dados['senha']):
+            return {'error':'Email ou senha inválida'}, 400
+        
         token = create_access_token(identity=cliente.id)
 
-        return {
-            "cliente" : schema.dump(cliente),
-            "token" : token
-        }, 200
+        return {"token": token},200
             
