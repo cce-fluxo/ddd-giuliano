@@ -68,7 +68,7 @@ class ClienteLogin(MethodView):
 
         cliente = Cliente.query.filter_by(email=email).first()
 
-        if not cliente or not bcrypt.checkpw(senha.encode(), cliente.senha_hash.encode):
+        if not cliente or not bcrypt.checkpw(senha.encode(), cliente.senha_hash):
             return {"error":"usuário ou senha inválidos"},400
 
         token = create_access_token(identity=cliente.id)
