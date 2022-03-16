@@ -68,7 +68,7 @@ class ClienteLogin(MethodView):
         senha_inserida_hasheada = bcrypt.hashpw(senha.encode(), bcrypt.gensalt())
         check = False
         cliente = Cliente.query.filter_by(email=email).first()
-        return {"senha":f'{senha}', "senha_inserida_hash":f'{senha_inserida_hasheada}', "senha_cliente_hash":f'{cliente.senha_hash}',"decode":senha_inserida_hasheada.decode()}
+        return {"senha":f'{senha}', "senha_inserida_hash":f'{senha_inserida_hasheada}', "senha_cliente_hash":f'{cliente.senha_hash}',"decode":senha_inserida_hasheada.decode(), "senha_encode":senha.encode()}
         if senha_inserida_hasheada == cliente.senha_hash:
             check = True
 
