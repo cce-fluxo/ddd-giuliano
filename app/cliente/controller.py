@@ -62,7 +62,7 @@ class ClienteLogin(MethodView):
     def post(self):
         schema = LoginSchema()
         dados = schema.load(request.json)
-        cliente = Cliente.query.filter_by(email=dados['email']).first()
+        cliente = Cliente.query.get_or_404(id)
 
         if (not cliente) or not cliente.verify_senha(dados['senha']):
             return {'error':'Email ou senha inválida'}, 400
