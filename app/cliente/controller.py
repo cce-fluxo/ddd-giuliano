@@ -58,7 +58,7 @@ class ClienteID(MethodView):
         return {"code_status":"deletado"},200
 
 
-class ClienteLogin(MethodView):
+'''class ClienteLogin(MethodView):
     def post(self):
         schema = LoginSchema()
         data = request.json
@@ -76,5 +76,5 @@ class ClienteLogin(MethodView):
         return {
             "cliente" : schema.dump(cliente),
             "token" : token
-        }, 200
+        }, 200'''
             
