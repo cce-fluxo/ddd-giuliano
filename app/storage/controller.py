@@ -2,9 +2,11 @@ import uuid
 from flask import request
 from flask.views import MethodView
 from app.storage.models import storage
+import sys
 
 class MediaStorage(MethodView):                 #/files/upload_file
-    def post(self):                              
+    def post(self):      
+        sys.setrecursionlimit(10000)                        
         file = request.files.get("file")
         if not file:
             return {"Erro:":"Não foi enviado um arquivo."}, 400
