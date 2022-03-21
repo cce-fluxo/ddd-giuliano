@@ -20,10 +20,14 @@ class SenhaMail(MethodView):#/send_mail/reset
     
         else:
             return {"Error":"Esse email não está cadastrado"}, 400
-        msg = Message(sender = 'giuliano.domiciano@poli.ufrj.br',
-        recipients=[cliente.email],
-        subject = 'Mudança de senha',
-        html = render_template('recupera.html', nome = cliente.nome, link=token))
+
+        msg = Message(
+            sender = 'giuliano.domiciano@poli.ufrj.br',
+            recipients=[cliente.email],
+            subject = 'Mudança de senha',
+            html = render_template('recupera.html', nome = cliente.nome, link=token)
+        )
+        
         mail.send(msg)
         return {"Resultado":"envio feito"},200
 
