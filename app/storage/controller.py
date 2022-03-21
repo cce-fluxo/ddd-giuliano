@@ -5,8 +5,7 @@ from app.storage.models import storage
 import sys
 
 class MediaStorage(MethodView):                 #/files/upload_file
-    def post(self):      
-        sys.setrecursionlimit(10000)                        
+    def post(self):                        
         file = request.files.get("file")
         if not file:
             return {"Erro:":"Não foi enviado um arquivo."}, 400
@@ -19,7 +18,7 @@ class MediaStorage(MethodView):                 #/files/upload_file
         return {"nome_da_file":file_name},200
 
 class GetMedia(MethodView):                     #/files/get_file
-    def get(self):                               
+    def get(self):                
         file_key = request.json.get("key", "")
         url = storage.get_url(file_key)
         return {"key":url}, 200
