@@ -19,7 +19,7 @@ class SenhaMail(MethodView):#/send_mail/reset
             refresh_token = create_refresh_token(identity=cliente.id, additional_claims={'user_type': "cliente"})
     
         else:
-            return {"Error":"Esse email não está cadastrado cadastrado"}, 400
+            return {"Error":"Esse email não está cadastrado"}, 400
         msg = Message(sender = 'giuliano.domiciano@poli.ufrj.br',
         recipients=[cliente.email],
         subject = 'Mudança de senha',
